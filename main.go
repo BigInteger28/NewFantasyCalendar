@@ -17,6 +17,7 @@ var startDagnr int = 80
 
 var week = 5
 var maand = 20
+var maanden = 5
 var jaar = 100
 
 func check(err error) {
@@ -39,12 +40,25 @@ func inputNaarDatum(input string) Datum {
 
 func main() {
 	var input string
+	var menu int
 	for {
-		fmt.Print("Gregoriaanse datum: ")
-		fmt.Scanln(&input)
-		datum := inputNaarDatum(input)
-		dag := berekenVerschilDagen(datum)
-		var uitkomst Datum = naarNieuweDatum(dag)
-		fmt.Println(uitkomst.dag, "/", uitkomst.maand, "/", uitkomst.jaar)
+		fmt.Println("\n1. Naar CHI")
+		fmt.Println("2. Naar GREGORIAANS")
+		fmt.Print("Uw keuze: ")
+		fmt.Scanln(&menu)
+		if menu == 1 {
+			fmt.Print("Gregoriaanse datum: ")
+			fmt.Scanln(&input)
+			datum := inputNaarDatum(input)
+			verschil := berekenVerschilDagen(datum)
+			var uitkomst Datum = naarNieuweDatumCHI(verschil)
+			fmt.Println(uitkomst.dag, "/", uitkomst.maand, "/", uitkomst.jaar)
+		} else if menu == 2 {
+			fmt.Print("Chi datum: ")
+			fmt.Scanln(&input)
+			datum := inputNaarDatum(input)
+			var uitkomst Datum = naarNieuweDatumGRE(datum)
+			fmt.Println(uitkomst.dag, "/", uitkomst.maand, "/", uitkomst.jaar)
+		}
 	}
 }
