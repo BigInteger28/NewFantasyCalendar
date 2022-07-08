@@ -44,6 +44,7 @@ func main() {
 	for {
 		fmt.Println("\n1. Naar CHI")
 		fmt.Println("2. Naar GREGORIAANS")
+		fmt.Println("3. CHI Maand kalender")
 		fmt.Print("Uw keuze: ")
 		fmt.Scanln(&menu)
 		if menu == 1 {
@@ -59,6 +60,23 @@ func main() {
 			datum := inputNaarDatum(input)
 			var uitkomst Datum = naarNieuweDatumGRE(datum)
 			fmt.Println(uitkomst.dag, "/", uitkomst.maand, "/", uitkomst.jaar)
+		} else if menu == 3 {
+			var startchi string
+			var chijaar int
+			fmt.Print("Start CHI: ")
+			fmt.Scanln(&startchi)
+			fmt.Print("Aantal CHI-jaar: ")
+			fmt.Scanln(&chijaar)
+			startdatum := inputNaarDatum(startchi)
+			var greg Datum = naarNieuweDatumGRE(startdatum)
+			for datum:=startdatum; datum.jaar<startdatum.jaar+chijaar; datum.jaar++ {
+				for i:=0; i<maanden; i++ {
+					greg = naarNieuweDatumGRE(datum)				
+					fmt.Println(datum.dag, "/", datum.maand, "/", datum.jaar, "\t-\t", greg.dag, "/", greg.maand, "/", greg.jaar)
+					datum.maand = ((datum.maand % maanden + maanden) % maanden) + 1									
+				}
+				fmt.Println("")
+			}
 		}
 	}
 }
