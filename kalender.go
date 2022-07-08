@@ -52,20 +52,20 @@ func berekenVerschilDagen(input Datum) int {
 	return dagenVerschil
 }
 
-func naarNieuweDatumCHI(input int) Datum {
+func naarNieuweDatumCHI(verschilDagen int) Datum {
 	var aantalJaar int
 	var nieuweDatum Datum
-	nieuweDatum.dag = ((input%maand + maand) % maand) + 1
-	if input < 0 {
-		aantalJaar = (input / jaar) - 1
-		input = input - ((aantalJaar + 1) * jaar)
-		input = jaar + input
+	nieuweDatum.dag = ((verschilDagen%maand + maand) % maand) + 1
+	if verschilDagen < 0 {
+		aantalJaar = (verschilDagen / jaar) - 1
+		verschilDagen = verschilDagen - ((aantalJaar + 1) * jaar)
+		verschilDagen = jaar + verschilDagen
 	} else {
-		aantalJaar = input / jaar
-		input = input - (aantalJaar * jaar)
+		aantalJaar = verschilDagen / jaar
+		verschilDagen = verschilDagen - (aantalJaar * jaar)
 	}
 	nieuweDatum.jaar = aantalJaar
-	nieuweDatum.maand = (input / maand) + 1
+	nieuweDatum.maand = (verschilDagen / maand) + 1
 	return nieuweDatum
 }
 
@@ -93,31 +93,28 @@ func naarNieuweDatumGRE(input Datum) Datum {
 			}
 		}
 	} else {
-		//TODO
 		aantalDagen *= -1
 		for i := 0; i < aantalDagen; i++ {
-			if nieuweDatum.dag == 1 {
-				if nieuweDatum.maand != 1 {
-					nieuweDatum.maand -= 1
-				} else {
-					nieuweDatum.maand = 12
-				}
-			}
-			//TOT HIER bekeken
-			if !ditjaarschrikkel || nieuweDatum.maand != 2 {
-				nieuweDatum.dag = (nieuweDatum.dag % (maandenNormaal[nieuweDatum.maand-1])) - 1
+			if nieuweDatum.dag > 1 {
+				nieuweDatum.dag -= 1
 			} else {
-				nieuweDatum.dag = (nieuweDatum.dag % 29) - 1
+				if nieuweDatum.maand != 3 && nieuweDatum.maand != 1 {
+					nieuweDatum.maand -= 1
+					nieuweDatum.dag = maandenNormaal[nieuweDatum.maand-1]
+				} else if nieuweDatum.maand == 3 {
+					if isSchrikkeljaar(nieuweDatum.jaar) {
+						nieuweDatum.dag = 29
+					} else {
+						nieuweDatum.dag = 28
+					}
+					nieuweDatum.maand = 2
+				} else if nieuweDatum.maand == 1 {
+					nieuweDatum.maand = 12
+					nieuweDatum.dag = 31
+					nieuweDatum.jaar -= 1 
+				}
 			}
 
-			if nieuweDatum.dag == 1 && nieuweDatum.maand == 1 {
-				nieuweDatum.jaar += 1
-				if isSchrikkeljaar(nieuweDatum.jaar) {
-					ditjaarschrikkel = true
-				} else {
-					ditjaarschrikkel = false
-				}
-			}
 		}
 	}
 	return nieuweDatum
