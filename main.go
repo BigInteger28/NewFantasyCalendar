@@ -63,7 +63,7 @@ func main() {
 		} else if menu == 3 {
 			var startchi string
 			var chijaar int
-			fmt.Print("Start CHI: ")
+			fmt.Print("Start CHI-datum: ")
 			fmt.Scanln(&startchi)
 			fmt.Print("Aantal CHI-jaar: ")
 			fmt.Scanln(&chijaar)
