@@ -67,13 +67,16 @@ func main() {
 			fmt.Scanln(&startchi)
 			fmt.Print("Aantal CHI-jaar: ")
 			fmt.Scanln(&chijaar)
-			startdatum := inputNaarDatum(startchi)
-			var greg Datum = naarNieuweDatumGRE(startdatum)
-			for datum:=startdatum; datum.jaar<startdatum.jaar+chijaar; datum.jaar++ {
-				for i:=0; i<maanden; i++ {
-					greg = naarNieuweDatumGRE(datum)				
-					fmt.Println(datum.dag, "/", datum.maand, "/", datum.jaar, "\t-\t", greg.dag, "/", greg.maand, "/", greg.jaar)
-					datum.maand = ((datum.maand % maanden + maanden) % maanden) + 1									
+			datum := inputNaarDatum(startchi)
+			gregDat := naarNieuweDatumGRE(datum)
+			for m := 0; m < chijaar; m++ {
+				for i := 0; i < maanden; i++ {
+					fmt.Println(datum.dag, "/", datum.maand, "/", datum.jaar, "\t-\t", gregDat.dag, "/", gregDat.maand, "/", gregDat.jaar)
+					datum.maand = ((datum.maand%maanden + maanden) % maanden) + 1
+					if datum.maand == 1 {
+						datum.jaar++
+					}
+					gregDat = naarNieuweDatumGRE(datum)
 				}
 				fmt.Println("")
 			}
